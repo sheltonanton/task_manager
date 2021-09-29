@@ -39,7 +39,6 @@ RSpec.describe Task do
         end
 
         it "shouldn't change the description" do
-            puts task.description
             expect {
                 task.description "Yet another description"
             }.to raise_error(ArgumentError)

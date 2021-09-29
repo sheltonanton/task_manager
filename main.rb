@@ -2,6 +2,7 @@ dirname = File.join(File.dirname(__FILE__), 'lib')
 $LOAD_PATH.unshift(dirname) unless $LOAD_PATH.include?(dirname)
 
 require "command"
+require "task_group"
 
 commandsList = <<EOS
 
@@ -19,6 +20,8 @@ lto - list tasks in optimum order
 EOS
 
 cli = CLI.instance
+TaskGroupFactory.load "tg.dat"
+
 begin
     while true
         puts commandsList
