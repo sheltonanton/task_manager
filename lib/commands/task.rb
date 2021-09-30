@@ -40,7 +40,29 @@ class ListTaskOrdered < Command
     end
 end
 
+class AddTaskDependency < Command
+    def initialize()
+        super("add task dependency", "atd")
+    end
+
+    def execute()
+        # add task dependency
+    end
+end
+
+class RemoveTaskDependency < Command
+    def initialize()
+        super("remove task dependency", "rtd")
+    end
+
+    def execute()
+        # remove task dependency
+    end
+end
+
 CommandFactory.registerCommand(ListTask)
 CommandFactory.registerCommand(AddTask)
 CommandFactory.registerCommand(RemoveTask)
 CommandFactory.registerCommand(ListTaskOrdered)
+CommandFactory.registerCommand(AddTaskDependency)
+CommandFactory.registerCommand(RemoveTaskDependency)

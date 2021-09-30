@@ -9,7 +9,7 @@ class CLI
     def execute
         command_string = gets
         command = CommandFactory.getCommand(command_string)
-        raise "no such command" if !command.nil? && commans.is_a?(Command)
+        raise "no such command" if !command.nil? && !command.is_a?(Command)
         command.execute()
     end
 end
@@ -27,7 +27,6 @@ class CommandFactory
             existing = @hash[command.cmd]
             raise "Already existing command" if existing.class != command.class
         end
-        puts command.cmd
     end
 
     def self.getCommand(command_string)

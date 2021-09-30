@@ -2,9 +2,14 @@ require "json"
 
 class TaskGroup
     attr_reader :name, :description
+
+    # tasks contains all the task inside the group
+    # dependencies contains all the task group which are dependants of this task group
     def initialize(name, description=nil)
         @name = name
         @description = description
+        @dependencies = Array.new
+        @tasks = Array.new
     end
 
     def set_description(description)
@@ -13,6 +18,12 @@ class TaskGroup
 
     def set_name(name)
         @name = name
+    end
+
+    def list_tasks()
+        @tasks.map do |task|
+            task.name
+        end
     end
 end
 

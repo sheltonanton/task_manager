@@ -1,15 +1,3 @@
 class Task
-    attr_reader :title, :description
-    def initialize(title, description=nil)
-        @title = title
-        @description = description
-    end
-
-    def set_description(description)
-        @description = description
-    end
-
-    def set_title(title)
-        @title = title
-    end
+    attr_accessor :title, :description, :priority, :difficulty, :deadline, :start_time, :id
 end
