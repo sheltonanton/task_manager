@@ -1,28 +1,60 @@
 require "json"
+require "task"
 
 class TaskGroup
-    attr_reader :name, :description
-
-    # tasks contains all the task inside the group
-    # dependencies contains all the task group which are dependants of this task group
-    def initialize(name, description=nil)
-        @name = name
-        @description = description
-        @dependencies = Array.new
+    attr_reader :title, :description, :tasks, :dependencies
+    def initialize()
         @tasks = Array.new
+        @dependencies = Hash.new
+        @strategy = Strategy.new(@tasks, @dependencies)
     end
 
-    def set_description(description)
-        @description = description
+    def get_task(id)
+        return @strategy.get_vertex(id)
     end
 
-    def set_name(name)
-        @name = name
+    def add_task(task_data)
+        task = Task.new
+        task.id = _get_id()
+        _add_details(task, task_data)
+        @strategy.add_vertex(task)
+        return task
     end
 
-    def list_tasks()
-        @tasks.map do |task|
-            task.name
+    def remove_task(id, forced=false)
+        case @strategy.remove_vertex(id, forced)
+        when :dependants_in_vertex 
+            raise 'Task has dependants'
+        end
+    end
+
+    def add_dependency(a, b)
+        case @strategy.add_edge(a, b)
+        when :already_added 
+            raise 'Dependency already established'
+        when :has_cycle 
+            raise 'It forms a cyclic dependency when added'
+        end
+    end
+
+    def remove_dependency(a, b)
+        @strategy.remove_edge(a, b)
+    end
+
+    def _add_details(task, data)
+        data.each { |attribute, value|
+            task.send("#{attribute.to_s}=", value) if task.respond_to?(attribute.to_sym);
+        }
+    end
+
+    def _get_id
+        greater_task_id = @tasks.map { |task| task.id }.select {|id| id != nil }.inject do |max, id|
+            [max, id].max
+        end
+        if greater_task_id == nil
+            return 1
+        else
+            return greater_task_id + 1
         end
     end
 end
