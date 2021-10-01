@@ -17,20 +17,37 @@ class ListTask < Command
                 puts "(#{task.id}) #{task.title}"
             end
         end
+
+        if tasks.size == 0
+            puts 'No tasks found'
+        end
     end
 end
 
 class AddTask < Command
     def execute()
         puts 'adding task'
-        title = gets 'title'
-        description = gets 'description'
-        priority = gets 'priority (l,m,h)'
-        difficulty = gets 'difficultry (e,m,d)'
-        deadline = gets 'deadline (in hours)'
+
+        print "title: "
+        title = gets
+
+        print "description: "
+        description = gets
+
+        print 'priority (l,m,h): '
+        priority = gets
+
+        print 'difficultry (e,m,d): '
+        difficulty = gets
+
+        print 'deadline (in hours): '
+        deadline = gets
+
         deadline.to_i
         start_time = Time.now
-        status = gets 'status (pending, ongoing, done)'
+
+        print 'status (pending, ongoing, done): '
+        status = gets
 
         data = {
             "title" => title,
@@ -43,6 +60,9 @@ class AddTask < Command
         }
         tg = TaskGroupFactory.get_current
         tg.add_task(data)
+
+        puts '----------'
+        puts 'task added'
     end
 end
 

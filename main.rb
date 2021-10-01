@@ -16,12 +16,15 @@ begin
             puts "------------------------"
             cli.execute()
         rescue SystemExit, Interrupt
+            print('exiting')
             raise
         rescue Exception => e
             break if e.message == 'Quit'
             puts e.message
+            puts e.backtrace
         end
     end
 rescue Exception => e
+    TaskGroupFactory.save "tg.dat"
     puts "Program exited"
 end

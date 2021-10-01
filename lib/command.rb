@@ -10,7 +10,8 @@ class CLI
 
     def execute
         command_string = gets
-        command_string, *args = command_string.split(',')
+        puts
+        command_string, *args = command_string.split(' ')
         command = CommandFactory.get_command(command_string.strip)
         raise "no such command" if !command.nil? && !command.is_a?(Command)
         command.execute(*args)

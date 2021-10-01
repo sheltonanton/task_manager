@@ -1,5 +1,6 @@
 require "json"
 require "task"
+require "strategy"
 
 class TaskGroup
     attr_accessor :title, :description, :tasks, :dependencies, :id
