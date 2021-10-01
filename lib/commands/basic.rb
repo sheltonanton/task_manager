@@ -1,6 +1,6 @@
 require "command"
 
-commandsList = <<EOS
+COMMANDS_LIST = <<EOS
 
 Command list
 ------------
@@ -15,25 +15,13 @@ rtd - remove task dependency
 EOS
 
 class CmdList < Command
-    def initialize
-        super("command list", "cmd")
-    end
-
     def execute()
-        puts commandsList
+        puts COMMANDS_LIST
     end
 end
 
 class Quit < Command
-    def initialize()
-        super("quit", "q")
-    end
-
     def execute()
         raise "Quit"
     end
 end
-
-
-CommandFactory.registerCommand(Quit)
-CommandFactory.registerCommand(CmdList)

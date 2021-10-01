@@ -7,10 +7,22 @@ RSpec.describe TaskGroupFactory do
         end
     end
 
-    describe "#current" do
-        it "should return a default task group if empty" do
-            expect(TaskGroupFactory.get_current).to be_a(Task)
+    shared_examples "#get_task_groups" do
+        it "should return an array of task group" do
+            TaskGroupFactory.get_task_groups.each do |tg|
+                expect(tg).to be_a(TaskGroup)
+            end
         end
+    end
+
+    it_behaves_like "#get_task_groups"
+
+    describe "#get_current" do
+        it "should return a default task group if empty" do
+            expect(TaskGroupFactory.get_current).to be_a(TaskGroup)
+        end
+
+        include_examples "#get_task_groups"
     end
 end
 

@@ -2,13 +2,10 @@ require "command"
 require "task_group"
 
 class ListTask < Command
-    def initialize()
-        super("list task", "lt")
-    end
-
-    def execute(arg)
+    def execute(*args)
+        arg = args[0]
         tasks = TaskGroupFactory.get_current.tasks
-        if arg = 'detailed'
+        if arg == 'detailed'
             tasks.each do |task|
                 puts "(#{task.id}) #{task.title}"
                 puts
@@ -24,10 +21,6 @@ class ListTask < Command
 end
 
 class AddTask < Command
-    def initialize()
-        super("add task", "at")
-    end
-
     def execute()
         puts 'adding task'
         title = gets 'title'
@@ -54,10 +47,6 @@ class AddTask < Command
 end
 
 class RemoveTask < Command
-    def initialize()
-        super("remove task", "rt")
-    end
-
     def execute()
         puts 'give task id:'
         id = gets 'task id'
@@ -69,10 +58,6 @@ class RemoveTask < Command
 end
 
 class ListTaskOrdered < Command
-    def initilize()
-        super("list task order"< "lto")
-    end
-
     def execute()
         tg = TaskGroupFactory.get_current.sort
         sorted = tg.sort.reverse
@@ -86,10 +71,6 @@ class ListTaskOrdered < Command
 end
 
 class AddTaskDependency < Command
-    def initialize()
-        super("add task dependency", "atd")
-    end
-
     def execute()
         tg = TaskGroupFactory.get_current
         a = gets 'id of task which depends on'
@@ -105,10 +86,6 @@ class AddTaskDependency < Command
 end
 
 class RemoveTaskDependency < Command
-    def initialize()
-        super("remove task dependency", "rtd")
-    end
-
     def execute()
         tg = TaskGroupFactory.get_current
         a = gets 'id of task which depends on'

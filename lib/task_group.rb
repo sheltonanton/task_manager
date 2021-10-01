@@ -83,7 +83,7 @@ class TaskGroupFactory
     @@task_groups = Array.new
     @current = nil
 
-    def self.listTaskGroups
+    def self.get_task_groups
         return @@task_groups
     end
 
@@ -102,7 +102,7 @@ class TaskGroupFactory
         end
     end
 
-    def _get_default
+    def self._get_default
         tg = TaskGroup.new
         tg.id = 1
         tg.title = 'Default'
@@ -124,7 +124,7 @@ class TaskGroupFactory
 
     def self.get_current()
         if @@task_groups.size == 0
-            @current = _get_default
+            @current = self._get_default
         end
         return @current
     end

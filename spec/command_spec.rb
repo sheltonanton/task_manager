@@ -1,4 +1,5 @@
 require "command"
+require "commands/task"
 
 RSpec.shared_examples "method definition" do |method|
     it "should have a method '#{method.to_s}' defined" do
@@ -22,28 +23,47 @@ end
 
 RSpec.describe CommandFactory do
     subject(:factory) { CommandFactory }
-    describe "#listCommands" do
-        it "returns the list of commands" do
-            puts subject.listCommands.inspect
-            expect(subject.listCommands.size).to be > 0
+
+    describe "#load_commands" do
+        it "should load all the commands" do
+            expect(subject.list_commands.size).to eq(0)
+            subject.load_commands
+            expect(subject.list_commands.size).to eq(8)
         end
     end
 
-    describe "#getCommand" do
+    describe "#list_commands" do
+        it "returns the list of commands" do
+            expect(subject.list_commands.size).to be > 0
+        end
+    end
+
+    describe "#get_command" do
         it "returns the list of command registered (shouldn't be zero)" do
-            expect(subject.getCommand "ltg").to_not be_nil
+            expect(subject.get_command "lt").to_not be_nil
         end
     end
 end
 
-RSpec.describe ListTaskGroup do
+RSpec.describe ListTask do
+    subject(:lt) { CommandFactory.get_command('lt') }
     it "should be belong to Command class" do
-        expect(ListTaskGroup.superclass).to eq(Command)
+        expect(ListTask.superclass).to eq(Command)
     end
 
     describe "#name" do
         it "should be a string" do
-            expect(subject.name).to be_a(String)
+            expect(lt.name).to be_a(String)
+        end
+    end
+
+    describe "#execute" do
+        it "should have a method which executes the command" do
+            expect(lt.respond_to?(:execute)).to eq(true)
+        end
+
+        it "should list the tasks present in it" do
+            lt.execute("detailed")
         end
     end
 end
