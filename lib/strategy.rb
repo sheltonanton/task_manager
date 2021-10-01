@@ -1,11 +1,17 @@
 class Strategy
-    def initialize(vertices, graph)
-        @visited = Hash.new
+    def initialize(vertices, graph=Hash.new)
         @vertices = vertices
         @graph = graph
+
+        @vertices.each do |vertex|
+            if @graph[vertex].nil?
+                @graph[vertex] = Array.new
+            end
+        end
     end
 
     def sort()
+        @visited = Hash.new
         graph = @graph
         vertices = graph.keys
         for vertex in vertices do
@@ -19,6 +25,15 @@ class Strategy
             end
         end
         return stack
+    end
+
+    def check_cycle
+        @visited = Hash.new
+        for vertex in @vertices do
+            @visited[vertex] = false
+        end
+
+        return @vertices.any? { |vertex| (!@visited[vertex]) && _check_loop(vertex) }
     end
 
     def _topological_sort(v, stack)
@@ -36,8 +51,12 @@ class Strategy
         stack << v
     end
 
-    def check_cycle
-        return false
+    def _check_loop(vertex)
+        return true if @visited[vertex]
+        @visited[vertex] = true
+        res = @graph[vertex].any? { |v| _check_loop(v) }
+        @visited[vertex] = false
+        return res
     end
 
     def get_vertices()
@@ -75,20 +94,17 @@ class Strategy
             end
         end
 
-        @vertices.delete(
-            @vertices.find do |vertex|
-                _value(vertex) == id
-            end
-        )
+        @vertices.delete(@vertices.find { |vertex|  _value(vertex) == id })
     end
 
     def add_edge(a, b)
         if @graph[a].include? b
             return :already_added
         end
-        @graph[a] = b
+        @graph[a] << b
         has_cycle = check_cycle
         return :has_cycle if has_cycle
+        @graph[a].delete(b)
     end
 
     def remove_edge(a, b)

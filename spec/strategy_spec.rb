@@ -72,13 +72,17 @@ RSpec.describe Strategy do
     end
 
     describe "#check_cycle" do
+        it "should return false since there isn't any cycle" do
+            expect(subject.check_cycle).to eq(false)
+        end
+        
         it "should return true when 1,2 edge is added" do
             subject.add_edge(1, 2)
             expect(subject.check_cycle).to eq(true)
         end
         
         it "should return false since the cyclic edge is removed" do
-            subject.remove_edge(1,2)
+            subject.remove_edge(1, 2)
             expect(subject.check_cycle).to eq(false)
         end
     end

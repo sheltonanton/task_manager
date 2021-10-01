@@ -2,11 +2,27 @@ require "json"
 require "task"
 
 class TaskGroup
-    attr_reader :title, :description, :tasks, :dependencies
+    attr_accessor :title, :description, :tasks, :dependencies, :id
     def initialize()
         @tasks = Array.new
         @dependencies = Hash.new
         @strategy = Strategy.new(@tasks, @dependencies)
+    end
+
+    def sort()
+        @strategy.sort
+    end
+
+    def save()
+        data = {
+            "title" => @title,
+            "description" => @description,
+            "tasks" => @tasks.map { |task| task.save },
+            "dependencies" => _save_dependencies,
+            "id" => @id
+        }
+
+        return data
     end
 
     def get_task(id)
@@ -57,11 +73,15 @@ class TaskGroup
             return greater_task_id + 1
         end
     end
+
+    def _save_dependencies
+    end
 end
 
 class TaskGroupFactory
     private_class_method :new
     @@task_groups = Array.new
+    @current = nil
 
     def self.listTaskGroups
         return @@task_groups
@@ -73,14 +93,41 @@ class TaskGroupFactory
         begin
             json = JSON.parse(file.read())
             json.each do |record|
-                load_task_group(record)
+                tg = load_task_group(record)
+                @@task_groups << tg
+                @current = tg
             end
         rescue Exception => e
             puts "reading empty file"
         end
+
+        if @@task_groups.size == 0
+            tg = TaskGroup.new
+            tg.id = 1
+            tg.title = 'Default'
+            @@task_groups << tg
+        end
     end
 
-    def load_task_group(data)
-        return
+    def self.save(file)
+        save_this = @@task_groups.map { |tg| tg.save }
+        file = File.open(file, "w+")
+
+        begin
+            dump = JSON.dump(save_this)
+            file.write(dump)
+        end
+    end
+
+    def self.get_current()
+        return @current
+    end
+
+    def self.load_task_group(data)
+        task_group = TaskGroup.new
+        data.each { |attribute, value|
+            task_group.send("#{attribute.to_s}=", value) if task_group.respond_to?(attribute.to_sym);
+        }
+        return task_group
     end
 end

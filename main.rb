@@ -4,28 +4,18 @@ $LOAD_PATH.unshift(dirname) unless $LOAD_PATH.include?(dirname)
 require "command"
 require "task_group"
 
-commandsList = <<EOS
-
-Command list
-------------
-q - quit
-atg - add taskgroup
-at - add task
-rtg - remove taskgroup
-rt - remove task
-ltg - list task groups
-lt - list tasks in no particular order
-lto - list tasks in optimum order
-
-EOS
-
 cli = CLI.instance
 TaskGroupFactory.load "tg.dat"
 
 begin
     while true
-        puts commandsList
-        cli.execute()
+        begin
+            puts "cmd for command list"
+            cli.execute()
+        rescue Exception => e
+            break if e.message == 'Quit'
+            puts e.message
+        end
     end
 rescue Exception => e
     puts "Program exited"
