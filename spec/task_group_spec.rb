@@ -6,6 +6,12 @@ RSpec.describe TaskGroupFactory do
             TaskGroupFactory.load('tg.dat')
         end
     end
+
+    describe "#current" do
+        it "should return a default task group if empty" do
+            expect(TaskGroupFactory.get_current).to be_a(Task)
+        end
+    end
 end
 
 RSpec.describe TaskGroup do

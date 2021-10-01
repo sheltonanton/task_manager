@@ -122,10 +122,3 @@ class RemoveTaskDependency < Command
         tg.remove_dependency(a, b)
     end
 end
-
-CommandFactory.registerCommand(ListTask)
-CommandFactory.registerCommand(AddTask)
-CommandFactory.registerCommand(RemoveTask)
-CommandFactory.registerCommand(ListTaskOrdered)
-CommandFactory.registerCommand(AddTaskDependency)
-CommandFactory.registerCommand(RemoveTaskDependency)

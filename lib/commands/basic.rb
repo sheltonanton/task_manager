@@ -36,3 +36,4 @@ end
 
 
 CommandFactory.registerCommand(Quit)
+CommandFactory.registerCommand(CmdList)

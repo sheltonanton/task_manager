@@ -95,19 +95,22 @@ class TaskGroupFactory
             json.each do |record|
                 tg = load_task_group(record)
                 @@task_groups << tg
-                @current = tg
             end
+            @current = (@task_groups.size > 0)? @task_groups[0]: _get_default
         rescue Exception => e
             puts "reading empty file"
         end
-
-        if @@task_groups.size == 0
-            tg = TaskGroup.new
-            tg.id = 1
-            tg.title = 'Default'
-            @@task_groups << tg
-        end
     end
+
+    def _get_default
+        tg = TaskGroup.new
+        tg.id = 1
+        tg.title = 'Default'
+        @@task_groups << tg
+        
+        return tg
+    end
+
 
     def self.save(file)
         save_this = @@task_groups.map { |tg| tg.save }
@@ -120,6 +123,9 @@ class TaskGroupFactory
     end
 
     def self.get_current()
+        if @@task_groups.size == 0
+            @current = _get_default
+        end
         return @current
     end
 

@@ -1,5 +1,4 @@
 require "command"
-require "commands/task_group"
 
 RSpec.shared_examples "method definition" do |method|
     it "should have a method '#{method.to_s}' defined" do
@@ -25,6 +24,7 @@ RSpec.describe CommandFactory do
     subject(:factory) { CommandFactory }
     describe "#listCommands" do
         it "returns the list of commands" do
+            puts subject.listCommands.inspect
             expect(subject.listCommands.size).to be > 0
         end
     end
